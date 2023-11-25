@@ -64,7 +64,7 @@
   vars:
     docker_image: paudelprashant/c0875470-node-app:1.0.0
     container_name: my_node_app
-    host_port: 8080
+    host_port: 3000
 
   tasks:
     - name: Pull Docker image
@@ -78,7 +78,7 @@
         image: "{{ docker_image }}"
         state: started
         ports:
-          - "{{ host_port }}:80"
+          - "{{ host_port }}:3000"
 
     - name: Wait for the container to be reachable
       wait_for:
