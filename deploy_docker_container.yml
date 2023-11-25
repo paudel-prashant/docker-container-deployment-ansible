@@ -1,0 +1,29 @@
+---
+- name: Deploy Docker Container
+  hosts: localhost
+  become: true
+
+  vars:
+    docker_image: paudelprashant/c0875470-node-app:1.0.0
+    container_name: my_node_app
+    host_port: 8080
+
+  tasks:
+    - name: Pull Docker image
+      docker_image:
+        name: "{{ docker_image }}"
+        source: pull
+
+    - name: Run Docker container
+      docker_container:
+        name: "{{ container_name }}"
+        image: "{{ docker_image }}"
+        state: started
+        ports:
+          - "{{ host_port }}:80"
+
+    - name: Wait for the container to be reachable
+      wait_for:
+        host: "http://localhost:{{ host_port }}"
+        state: started
+        timeout: 60
